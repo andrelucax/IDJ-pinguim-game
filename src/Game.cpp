@@ -108,15 +108,6 @@ Game& Game::GetInstance(){
         );
     }
     return *instance;
-    // if (Game::instance != nullptr){
-    //     return *Game::instance;
-    // }
-
-    // return *new Game(
-    //     GAME_TITLE, 
-    //     SCREEN_WIDTH, 
-    //     SCREEN_HEIGHT
-    // );
 }
 
 State& Game::GetState(){

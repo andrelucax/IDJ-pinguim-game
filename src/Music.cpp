@@ -13,7 +13,7 @@ Music::~Music(){
     Mix_FreeMusic(music);
 }
 
-void Music::Play(int times = -1){
+void Music::Play(int times){
     if(!music) {
         throw("nullptr music");
     }
@@ -23,7 +23,7 @@ void Music::Play(int times = -1){
     }
 }
 
-void Music::Stop(int msToStop = 1500){
+void Music::Stop(int msToStop){
     if(Mix_FadeOutMusic(msToStop)){
         cout << SDL_GetError() << endl;
         exit(MIX_FADE_OUT_ERROR);

@@ -2,17 +2,19 @@
 #include "Game.h"
 #include "Errors.h"
 
-Sprite::Sprite(){
+Sprite::Sprite(GameObject& gameObject) : Component(gameObject){
     texture = nullptr;
 }
 
-Sprite::Sprite(string file){
+Sprite::Sprite(GameObject& gameObject, string file) : Component(gameObject){
     texture = nullptr;
     Open(file);
 }
 
 Sprite::~Sprite(){
-    SDL_DestroyTexture(texture);
+    if (texture != nullptr) {
+        SDL_DestroyTexture(texture);
+    }
 }
 
 void Sprite::Open(string file){
@@ -39,6 +41,9 @@ void Sprite::Open(string file){
         exit(SDL_QUERY_TEXTURE_ERROR);
     }
 
+    associated.box.h = height;
+    associated.box.w = width;
+
     SetClip(0, 0, width, height);
 }
 
@@ -54,15 +59,12 @@ void Sprite::SetClip(
     clipRect.h = h;
 }
 
-void Sprite::Render(
-    int x, 
-    int y
-){
+void Sprite::Render(){
     SDL_Rect dstrect;
-    dstrect.x = x;
-    dstrect.y = y;
-    dstrect.h = clipRect.h;
-    dstrect.w = clipRect.w;
+    dstrect.x = (int)associated.box.x;
+    dstrect.y = (int)associated.box.y;
+    dstrect.h = (int)associated.box.h;
+    dstrect.w = (int)associated.box.w;
 
     if(SDL_RenderCopy(
         Game::GetInstance().GetRenderer(),
@@ -85,4 +87,10 @@ int Sprite::GetHeight(){
 
 bool Sprite::IsOpen(){
     return texture != nullptr;
+}
+
+void Sprite::Update(float dt){}
+
+bool Sprite::Is(string type){
+    return type == SPRITE_TYPE;
 }
